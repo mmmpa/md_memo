@@ -1,0 +1,2 @@
+export default APPLICATION_META_INFORMATION
+

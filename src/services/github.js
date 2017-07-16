@@ -19,8 +19,9 @@ export function insertParams ({ uri: raw, params }) {
 }
 
 export default class Github {
-  constructor ({ token }) {
+  constructor ({ token, oauth } = {}) {
     this.token = token
+    this.oauth = oauth
   }
 
   request ({ uri, method, params, body, query }) {
@@ -36,13 +37,50 @@ export default class Github {
       params: query,
       data: body,
     })
+      .then(({ data }) => data.error
+        ? Promise.reject(data)
+        : data)
   }
 
-  createAccessToken ({ client_id, client_secret, code }) {
-    this.request({
-      uri: 'https://github.com/login/oauth/access_token',
+  createAccessToken ({ code }) {
+    return this.request({
+      uri: this.oauth,
       method: 'post',
-      body: { client_id, client_secret, code },
+      body: { code },
+    })
+  }
+
+  indexRepositories () {
+    return this.request({
+      uri: '/user/repos',
+      method: 'get',
+    })
+  }
+
+  showRepository ({ owner, repository }) {
+    console.log('showRepository', { repository })
+    return this.request({
+      uri: '/repos/{:owner}/{:repo}',
+      method: 'get',
+      params: { owner, repo: repository },
+    })
+  }
+
+  createRepository ({ name }) {
+    return this.request({
+      uri: '/user/repos',
+      method: 'post',
+      body: {
+        name,
+        private: true,
+      },
+    })
+  }
+
+  showUser () {
+    return this.request({
+      uri: '/user',
+      method: 'get',
     })
   }
 }

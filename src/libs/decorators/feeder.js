@@ -59,6 +59,7 @@ export function cloner (ReactComponent) {
       const props = Object.assign({}, this.props, this.state)
       delete props.children
 
+
       return children.map((c, i) => c.type.constructor.name === 'String'
         ? c
         : React.cloneElement(c, Object.assign(props, { key: i })),

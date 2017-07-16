@@ -12,6 +12,7 @@
     }
   },
   "rules": {
+    "max-len": 0,
     "comma-dangle": 2,
     "no-cond-assign": 0,
     "no-confusing-arrow": 0,

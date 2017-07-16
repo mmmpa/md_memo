@@ -2,40 +2,51 @@ import React from 'react'
 import {
   BrowserRouter as Router,
   Link,
+  Route,
 } from 'react-router-dom'
+import { hashHistory } from 'react-router'
 
-import Index from './components/index'
-import AuthorizationContext from './contexts/authorization-context'
-import AuthorizationRoute from './components/authorization-route'
-import Token from './components/token'
-import GithubAuthorization from './components/github-authorization'
-import GithubSetting from './components/github-setting'
 import PropsRoute from './components/props-route'
+
+import RootContext from './contexts/root-context'
+
+import CommonContext from './contexts/common-context'
+import GithubConfiguration from './components/github-configuration'
+
+import MemoContext from './contexts/memo-context'
+import MemoIndex from './components/memo/index'
+import MemoTopPage from './components/memo/top-page'
+import MemoEditor from './components/memo/editor'
+import MemoViewer from './components/memo/viewer'
+import MemoController from './components/memo/controller'
+
+// フラグではなく state で分岐するようにする
 
 export default function () {
   return (
-    <Router>
-      <div>
-        <article className="container">
-          <AuthorizationContext>
-            <h1>md memo</h1>
+    <Router history={hashHistory}>
+      <RootContext>
+        <h1>md memo</h1>
+        <ul>
+          <li><Link to="/memo">memo</Link></li>
+          <li><Link to="/common/configuration">configuration</Link></li>
+        </ul>
 
-            <AuthorizationRoute tokenRequired>
-              <PropsRoute path="/" component={Index} />
-            </AuthorizationRoute>
+        <MemoContext contextPath="/memo">
+          <PropsRoute path="/memo" name="memo" component={MemoIndex} />
+          <PropsRoute exact path="/memo" component={MemoTopPage} />
+          <PropsRoute exact path="/memo/new" component={MemoEditor} />
+          <PropsRoute exact path="/memo/new" component={MemoViewer} />
+          <PropsRoute exact path="/memo/new" component={MemoController} />
+          <PropsRoute exact path="/memo/:file_name" component={MemoEditor} />
+          <PropsRoute exact path="/memo/:file_name" component={MemoViewer} />
+          <PropsRoute exact path="/memo/:file_name" component={MemoController} />
+        </MemoContext>
 
-            <AuthorizationRoute noTokenRequired>
-              <ul>
-                <li><Link to="/">Get Github API request token</Link></li>
-                <li><Link to="/github_setting">Set Github Oauth setting</Link></li>
-              </ul>
-              <PropsRoute exact path="/" component={GithubAuthorization} />
-              <PropsRoute exact path="/github_setting" component={GithubSetting} />
-              <PropsRoute exact path="/token" component={Token} />
-            </AuthorizationRoute>
-          </AuthorizationContext>
-        </article>
-      </div>
+        <CommonContext contextPath="/common">
+          <PropsRoute exact path="/common/configuration" component={GithubConfiguration} />
+        </CommonContext>
+      </RootContext>
     </Router>
   )
 }

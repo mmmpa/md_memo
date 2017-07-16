@@ -18,7 +18,7 @@ class TinyStorage {
   }
 
   removeItem (key) {
-    document.cookie = `${this.genKey(key)}= expires=Thu, 01 Jan 1970 00:00:01 GMT`
+    document.cookie = `${this.genKey(key)}=null expires=Thu, 01 Jan 1970 00:00:01 GMT`
   }
 }
 

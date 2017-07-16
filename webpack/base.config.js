@@ -16,7 +16,7 @@ module.exports = {
         test: /\.js$/,
         use: [
           'babel-loader',
-          'eslint-loader',
+          // 'eslint-loader',
         ],
         exclude: /node_modules/
       },
@@ -31,6 +31,8 @@ module.exports = {
       'APPLICATION_META_INFORMATION': JSON.stringify({
         commitId: require('./commit-id'),
         buildDate: new Date().toString(),
+        clientID: process.env.MD_MEMO_STORE_CLIENT_ID,
+        githubOauthEndpoint: process.env.MD_MEMO_STORE_GITHUB_OAUTH,
       }),
     }),
     new PreBuild(function () {}),
