@@ -26,10 +26,10 @@ export default class Github {
     this.repository = repository
   }
 
-  request ({ uri, method, params, body, query }) {
+  request ({ uri, method, params, body, query, headers: additionalHeaders = {} }) {
     const headers = this.token
-      ? { Authorization: `token ${this.token}` }
-      : {}
+      ? { Authorization: `token ${this.token}`, ...additionalHeaders }
+      : { ...additionalHeaders }
 
     return axios({
       method,
@@ -67,7 +67,28 @@ export default class Github {
     })
   }
 
-  showRepository ({  owner = this.owner, repository = this.repository }) {
+  showFile ({ owner = this.owner, repository = this.repository, path }) {
+    console.log({ owner, repository, path })
+    return this.request({
+      uri: '/repos/{:owner}/{:repository}/contents/{:path}',
+      method: 'get',
+      params: { owner, repository, path },
+    })
+  }
+
+  download ({ owner = this.owner, repository = this.repository, path }) {
+    console.log({ owner, repository, path })
+    return this.request({
+      headers: {
+        Accept: 'application/vnd.github.v3.raw',
+      },
+      uri: '/repos/{:owner}/{:repository}/contents/{:path}',
+      method: 'get',
+      params: { owner, repository, path },
+    })
+  }
+
+  showRepository ({ owner = this.owner, repository = this.repository }) {
     return this.request({
       uri: '/repos/{:owner}/{:repository}',
       method: 'get',

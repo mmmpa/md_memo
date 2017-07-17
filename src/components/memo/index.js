@@ -10,7 +10,7 @@ export default class extends React.Component {
   get files () {
     return this.props.files.map(({name, download, sha}) =>
       <li key={sha}>
-        <Link to={ `/memo/${sha}` }>{ name }</Link>
+        <Link to={ `/memo/f-${sha}` }>{ name }</Link>
       </li>
     )
   }

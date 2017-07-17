@@ -37,7 +37,9 @@ export default class extends React.Component {
     this.dispatch('document:layout:change', 'full-width')
     this.setState({ currentPath: props.location.pathname, initialized: true })
 
-    this.setState({ files: await this.index() })
+    const files = await this.index()
+
+    this.setState({ files, filesMap: files.reduce((a, o) => (a[o.sha] = o, a), {}) })
   }
 
   listen (on) {

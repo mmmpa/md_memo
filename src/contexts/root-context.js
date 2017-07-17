@@ -48,7 +48,6 @@ export default class extends React.Component {
     try {
       this.state.token && this.setState(await this.refresh())
     } catch (e) {
-      console.log(e)
       this.requireNewToken()
       return
     }
@@ -87,7 +86,6 @@ export default class extends React.Component {
 
     let storeRepository
     try {
-      console.log('refresh', { repository })
       storeRepository = repository
         ? await github.showRepository({ owner: user.login, repository })
         : null
@@ -124,7 +122,6 @@ export default class extends React.Component {
 
   @bind
   changeLayout (containerClassName = 'container') {
-    console.log(containerClassName)
     this.setState({ containerClassName })
   }
 
@@ -141,7 +138,7 @@ export default class extends React.Component {
       return null
     }
 
-    console.log(this.props, this.state)
+    //console.log(this.props, this.state)
 
     return (
       <div className={this.state.containerClassName}>

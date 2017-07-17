@@ -1,24 +1,19 @@
 import React from 'react'
 import { dispatcher, router } from '../../libs/decorators/feeder'
-import { bind } from 'decko'
-import { Link } from 'react-router-dom'
-
-import Fa from '../fa'
+import marked from 'marked';
 
 @router
 @dispatcher
 export default class extends React.Component {
-  get files () {
-    return this.props.files.map(({name, download, sha}) =>
-      <li key={sha}>
-        <Link to={ `/memo/${sha}` }>{ name }</Link>
-      </li>
-    )
+  get marked () {
+    return { __html: marked(this.props.memo.md, { sanitize: true }) };
   }
+
   render () {
     return (
       <article>
-        viewer
+        <h1>viewer</h1>
+        <section className="viewer" dangerouslySetInnerHTML={this.marked} />
       </article>
     )
   }
