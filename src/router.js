@@ -14,6 +14,7 @@ import CommonContext from './contexts/common-context'
 import GithubConfiguration from './components/github-configuration'
 
 import MemoContext from './contexts/memo-context'
+import MemoEditorContext from './contexts/memo-editor-context'
 import MemoIndex from './components/memo/index'
 import MemoTopPage from './components/memo/top-page'
 import MemoEditor from './components/memo/editor'
@@ -32,16 +33,23 @@ export default function () {
           <li><Link to="/common/configuration">configuration</Link></li>
         </ul>
 
-        <MemoContext contextPath="/memo">
-          <PropsRoute path="/memo" name="memo" component={MemoIndex} />
+        <PropsRoute path="/memo" component={MemoContext}>
+          <MemoIndex />
+
           <PropsRoute exact path="/memo" component={MemoTopPage} />
-          <PropsRoute exact path="/memo/new" component={MemoEditor} />
-          <PropsRoute exact path="/memo/new" component={MemoViewer} />
-          <PropsRoute exact path="/memo/new" component={MemoController} />
-          <PropsRoute exact path="/memo/:file_name" component={MemoEditor} />
-          <PropsRoute exact path="/memo/:file_name" component={MemoViewer} />
-          <PropsRoute exact path="/memo/:file_name" component={MemoController} />
-        </MemoContext>
+
+          <PropsRoute exact path="/memo/new" component={MemoEditorContext}>
+            <MemoEditor />
+            <MemoViewer />
+            <MemoController />
+          </PropsRoute>
+
+          <PropsRoute exact path="/memo/f-:file_name" component={MemoEditorContext}>
+            <MemoEditor />
+            <MemoViewer />
+            <MemoController />
+          </PropsRoute>
+        </PropsRoute>
 
         <CommonContext contextPath="/common">
           <PropsRoute exact path="/common/configuration" component={GithubConfiguration} />

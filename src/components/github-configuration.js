@@ -76,7 +76,7 @@ export default class extends React.Component {
 
     this.uid = setTimeout(async () => {
       try {
-        await this.props.github.showRepository({ owner: this.props.user.login, repository })
+        await this.props.github.showRepository({ repository })
         this.setState({ isValidRepository: true })
       } catch (e) {
         console.log(e)

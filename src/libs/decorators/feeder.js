@@ -49,16 +49,20 @@ export function dispatcher (ReactComponent) {
   return ExtendedDispatcher
 }
 
+
+export function router (ReactComponent) {
+  return withRouter(ReactComponent)
+}
+
 export function cloner (ReactComponent) {
   const ExtendedCloner = class extends ReactComponent {
     get cloneChildren () {
-      const { children: child } = this.props
+      const { children: child, match, location, history, ...rest } = this.props
 
       const children = Array.isArray(child) ? child : [child]
 
-      const props = Object.assign({}, this.props, this.state)
+      const props = Object.assign({}, rest, this.state)
       delete props.children
-
 
       return children.map((c, i) => c.type.constructor.name === 'String'
         ? c

@@ -19,9 +19,11 @@ export function insertParams ({ uri: raw, params }) {
 }
 
 export default class Github {
-  constructor ({ token, oauth } = {}) {
+  constructor ({ token, oauth, owner, repository } = {}) {
     this.token = token
     this.oauth = oauth
+    this.owner = owner
+    this.repository = repository
   }
 
   request ({ uri, method, params, body, query }) {
@@ -57,12 +59,19 @@ export default class Github {
     })
   }
 
-  showRepository ({ owner, repository }) {
-    console.log('showRepository', { repository })
+  indexFiles ({ owner = this.owner, repository = this.repository, path = '' }) {
     return this.request({
-      uri: '/repos/{:owner}/{:repo}',
+      uri: '/repos/{:owner}/{:repository}/contents/{:path}',
       method: 'get',
-      params: { owner, repo: repository },
+      params: { owner, repository, path },
+    })
+  }
+
+  showRepository ({  owner = this.owner, repository = this.repository }) {
+    return this.request({
+      uri: '/repos/{:owner}/{:repository}',
+      method: 'get',
+      params: { owner, repository },
     })
   }
 

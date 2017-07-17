@@ -95,7 +95,7 @@ export default class extends React.Component {
       storeRepository = null
     }
 
-    return { github, user, storeRepository, repository, isValidToken: true }
+    return { github: new Github({ oauth, token: github.token, owner: user.login, repository: repository }), user, storeRepository, repository, isValidToken: true }
   }
 
   listen (on) {
@@ -138,8 +138,10 @@ export default class extends React.Component {
 
   render () {
     if (!this.state.initialized) {
-      return <span></span>
+      return null
     }
+
+    console.log(this.props, this.state)
 
     return (
       <div className={this.state.containerClassName}>
