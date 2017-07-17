@@ -73,8 +73,7 @@ export default class extends React.Component {
   }
 
   async takeToken (code) {
-    const { clientID: client_id, clientSecret: client_secret } = this.state
-    const { access_token: token } = await this.github.createAccessToken({ client_id, client_secret, code })
+    const { access_token: token } = await this.github.createAccessToken({ code })
 
     TinyStorage.setItem('token', token)
     this.setState({ token, github: new Github({ oauth, token }) })
