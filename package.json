@@ -6,7 +6,7 @@
   "scripts": {
     "dev-server": "webpack-dev-server --inline --hot --progress --colors --config ./webpack/dev.config.js --port 5100 --content-base ./public",
     "build": "webpack --progress --colors --config ./webpack/pro.config.js",
-    "build-sass": "node-sass --watch ./src-sass/common.sass ./public/css/common.css",
+    "build-sass": "node-sass --watch ./src-sass/common.sass ./public/css/c.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -8,16 +8,23 @@ import Fa from '../fa'
 @dispatcher
 export default class extends React.Component {
   get files () {
-    return this.props.files.map(({name, download, safePath}) =>
+    return this.props.files.map(({ name, download, safePath }) =>
       <li key={safePath}>
-        <Link to={ `/memo/f-${safePath}` }>{ name }</Link>
+        <Link to={ `/memo/${safePath}` }>{ name }</Link>
       </li>
     )
   }
+
   render () {
     return (
       <section id="memo-index">
         <ul>
+          <li>
+            <Link to="/common/configuration"><Fa icon="cog" />configuration</Link>
+          </li>
+          <li>
+            <Link to="/memo"><Fa icon="plus-circle" />new memo</Link>
+          </li>
           { this.files }
         </ul>
       </section>

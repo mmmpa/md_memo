@@ -50,6 +50,12 @@ export default class extends React.Component {
         this.changeMD(e.doc.getValue())
       });
 
+      this.cm.on('scroll', e => {
+        const { clientHeight, height, top } = e.getScrollInfo()
+        const rate = top / (height - clientHeight)
+        this.dispatch('cm:scroll', rate)
+      });
+
       this.cm.setValue(this.state.md);
       this.cm.setSize('100%', '100%')
       this.dispatch('cm:register', this.cm)

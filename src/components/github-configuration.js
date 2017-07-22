@@ -1,6 +1,7 @@
 import React from 'react'
 import { dispatcher } from '../libs/decorators/feeder'
 import { bind } from 'decko'
+import { Link } from 'react-router-dom'
 
 import Fa from './fa'
 
@@ -100,6 +101,10 @@ export default class extends React.Component {
 
     return (
       <article>
+        <ul>
+          <li><Link to="/memo">memo</Link></li>
+          <li><Link to="/common/configuration">configuration</Link></li>
+        </ul>
         <form>
           <div className="row">
             <div className="col-md-6">

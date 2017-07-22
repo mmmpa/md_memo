@@ -40,6 +40,15 @@ export default class Github {
       params: query,
       data: body,
     })
+      .catch(e => {
+        const { response: { status, statusText, data } } = e
+        return Promise.reject({
+          ...data,
+          status,
+          data,
+          id: Date.now()
+        })
+      })
       .then(({ data }) => data.error
         ? Promise.reject(data)
         : data)
@@ -69,7 +78,6 @@ export default class Github {
   }
 
   showFile ({ owner = this.owner, repository = this.repository, path }) {
-    console.log({ owner, repository, path })
     return this.request({
       uri: '/repos/{:owner}/{:repository}/contents/{:path}',
       method: 'get',
@@ -77,13 +85,32 @@ export default class Github {
     })
   }
 
+  createFile ({ owner = this.owner, repository = this.repository, path, message = 'created from md_memo', content }) {
+    return this.request({
+        uri: '/repos/{:owner}/{:repository}/contents/{:path}',
+        method: 'PUT',
+        params: { owner, repository, path },
+        body: { path, message, content }
+      })
+      .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
+  }
+
   updateFile ({ owner = this.owner, repository = this.repository, path, message = 'updated from md_memo', content, sha }) {
-    console.log({ owner, repository, path })
     return this.request({
         uri: '/repos/{:owner}/{:repository}/contents/{:path}',
         method: 'put',
         params: { owner, repository, path },
         body: { path, message, content, sha }
+      })
+      .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
+  }
+
+  deleteFile ({ owner = this.owner, repository = this.repository, path, message = 'deleted from md_memo', sha }) {
+    return this.request({
+        uri: '/repos/{:owner}/{:repository}/contents/{:path}',
+        method: 'delete',
+        params: { owner, repository, path },
+        body: { path, message, sha }
       })
       .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
   }

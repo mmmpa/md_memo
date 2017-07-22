@@ -4,68 +4,93 @@
 $tag-base-color: #f3f3f3
 $title-base-color: #fafafa
 
-%size-h1
-  font-size: 56px
+#memo,
+#memo-index,
+#memo-editor,
+#memo-viewer,
+#memo-controller
+  position: absolute
 
-%size-h2
-  font-size: 45px
+#memo-index
+  border: 1px solid $gray-lighter
+  overflow: hidden
+  direction: rtl
+  overflow-y: scroll
 
-%size-h3
-  font-size: 34px
+#memo-index ul
+  direction: ltr
+  padding: 0
+  margin: 0
 
-%size-h4
-  font-size: 24px
+#memo-index li
+  list-style: none
 
-%size-h5
-  font-size: 20px
+#memo-index a
+  display: block
+  border-bottom: 1px solid $gray-lighter
+  padding: 5px 10px
 
-%size-h6
-  font-size: 14px
+#memo-index li:last-child a
+  border-bottom: 0
 
-%min-cell
-  width: 10px
-  white-space: nowrap
+#memo-editor
+  border: 1px solid $gray-lighter
+  overflow: hidden
 
-.size-h1
-  font-size: 56px
+#memo-viewer
+  overflow-y: scroll
+  border: 1px solid $gray-lighter
 
-.size-h2
-  font-size: 45px
+#memo-viewer-content
+  padding: 10px
 
-.size-h3
-  font-size: 34px
+#memo-index
+  width: 200px
 
-.size-h4
-  font-size: 24px
+#memo-controller
+  position: fixed
+  bottom: 0
+  width: 100%
+  background: #fff
+  height: 45px
+  text-align: right
+  z-index: 100
+  .save
+    @extend .btn, .btn-success
+    margin-top: 5px
+  .delete
+    @extend .btn, .btn-danger
+    position: absolute
+    top: 5px
+    right: 5px
+    width: 35px
+    padding-left: 0
+    padding-right: 0
+    .fa
+      margin-right: 0
+  .error-message
+    @extend .text-danger
+    display: inline
+    line-height: 35px
+    margin-top: 5px
+    margin-right: 1em
+    .fa
+      margin-right: 0.5em
 
-.size-h5
-  font-size: 20px
+#memo-title
+  position: fixed
+  top: 0
+  width: 100%
+  background: #fff
+  height: 45px
 
-.size-h6
-  font-size: 14px
+  .layout
+    padding: 9px 0 5px 200px
 
-pre
-  border: 1px solid $gray-light
-  border-radius: 3px
-  letter-spacing: normal
-  line-height: 120%
-
-.memo.content,
-.html-container
-    font-size: 14px
-    letter-spacing: 2px
-    line-height: 200%
-    h1, h2, h3, h4, h5, h6
-      margin: 30px 0 20px
-      font-weight: bold
-      color: #555
-      letter-spacing: 2px
-    .section
-      margin: $font-size-h2 0
-    header
-      background: $tag-base-color
-      padding: 15px 20px
-      margin: 20px -20px
-      *
-        margin: 0
-
+button,
+a
+  .fa
+    margin-right: 0.5em
+  &.no-margin
+    .fa
+      margin-right: 0

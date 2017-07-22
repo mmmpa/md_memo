@@ -24,7 +24,9 @@ export default class extends React.Component {
       oauth,
       token: TinyStorage.getItem('token'),
     }),
-    containerClassName: 'container'
+    containerClassName: 'container',
+    isLocked: 0,
+    working: [],
   }
 
   get github () {
@@ -101,6 +103,9 @@ export default class extends React.Component {
     on('github:configuration:save', this.saveConfiguration)
 
     on('document:layout:change', this.changeLayout)
+
+    on('global:lock', () => this.setState({ isLocked: this.state.isLocked + 1 }))
+    on('global:unlock', () => this.setState({ isLocked: this.state.isLocked - 1 }))
   }
 
   disposeToken () {

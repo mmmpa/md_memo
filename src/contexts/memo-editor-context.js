@@ -5,21 +5,31 @@ import { receiver, dispatcher, cloner } from '../libs/decorators/feeder'
 import Memo from '../models/memo'
 import { base64 } from '../libs/encode'
 
+function nextTick () {
+  return new Promise.resolve(resolve => {
+    setTimeout(() => resolve(), 0)
+  })
+}
+
 @receiver
 @dispatcher
 @cloner
 export default class extends React.Component {
   state = {
-    current: null,
     memo: new Memo(),
     md: '',
+    title: '',
+    error: null,
   }
 
   componentWillMount () {
+    this.current = null
+    this.isNewFile = false
+
     this.componentInitialization(this.props)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillUpdate (nextProps) {
     this.componentInitialization(nextProps)
   }
 
@@ -27,11 +37,21 @@ export default class extends React.Component {
     const { file_name: nextFileName } = props.match.params
     const nextFile = props.filesMap[nextFileName]
 
-    if (!props.filesMap || nextFile === this.state.current) {
+    if (!nextFileName) {
+      this.isNewFile = true
+    }
+
+    if (!props.filesMap || nextFileName === this.currentFileName) {
       return
     }
 
-    this.setState({ current: nextFile })
+    if (nextFileName && !nextFile) {
+      this.props.history.push('/memo')
+      return
+    }
+
+    this.currentFileName = nextFileName
+    this.current = nextFile
 
     try {
       await this.deliverMemo(nextFile)
@@ -42,7 +62,9 @@ export default class extends React.Component {
 
   listen (on) {
     on('memo:save', this.save)
-    on('memo:md:update', this.updateMd)
+    on('memo:destroy', this.destroy)
+    on('memo:md:update', md => this.setState({ md }))
+    on('memo:title:update', title => this.setState({ title }))
   }
 
   async deliverMemo ({ path } = {}) {
@@ -50,20 +72,52 @@ export default class extends React.Component {
       ? new Memo({ md: await this.props.github.download({ path }) })
       : new Memo()
 
-    this.setState({ md: memo.md })
+    this.setState({ md: memo.md, title: path })
   }
 
   @bind
-  updateMd (md) {
-    this.setState({ md })
+  async save (current = this.current || {}) {
+    const { sha, path: oldPath } = current
+    const { title: path, md } = this.state
+
+    this.dispatch('global:lock')
+    try {
+      const { content } = await (this.isNewFile
+        ? this.props.github.createFile({ path, content: base64(md) })
+        : this.props.github.updateFile({ path, sha, content: base64(md) }))
+
+      if (this.isNewFile) {
+        await this.dispatch('memo:index')
+        this.props.history.push(`/memo/${content.path}`)
+      } else if (path === oldPath) {
+        this.dispatch('memo:index:update', path, content)
+      } else {
+        await this.dispatch('memo:index:update', oldPath, content)
+        await this.props.github.deleteFile({ path: oldPath, sha })
+
+        setTimeout(() => this.props.history.push(`/memo/${content.path}`), 0)
+      }
+    } catch (e) {
+      this.setState({ error: e })
+    }
+
+    this.dispatch('global:unlock')
   }
 
   @bind
-  async save () {
-    const { path, sha } = this.state.current
+  async destroy (current = this.current) {
+    const { sha, path } = current
 
-    const { content } = await this.props.github.updateFile({ path, sha, content: base64(this.state.md) })
-    this.dispatch('memo:index:update', content)
+    this.dispatch('global:lock')
+    try {
+      await this.props.github.deleteFile({ path, sha })
+      this.setState({ md: '', title: '' })
+      this.props.history.push('/memo/')
+    } catch (e) {
+      this.setState({ error: e })
+    }
+
+    this.dispatch('global:unlock')
   }
 
   render () {

@@ -9,7 +9,7 @@ function Fa (props) {
 
   classes.push(`fa-${props.icon}`);
   props.scale && classes.push(`fa-${props.scale}x`);
-  (props.fixedWidth === undefined || props.fixedWidth === true) && classes.push('fa-fw');
+  props.fixedWidth && classes.push('fa-fw');
   props.list && classes.push('fa-li');
   props.border && classes.push('fa-border');
   props.pull && classes.push(`fa-pull-${props.pull}`);
