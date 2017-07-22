@@ -1,4 +1,5 @@
 import axios from 'axios'
+import FileInformation from '../models/file-information'
 
 const baseURL = 'https://api.github.com/'
 const placeHolder = /(\{:([^}]+)\})/
@@ -64,7 +65,7 @@ export default class Github {
       uri: '/repos/{:owner}/{:repository}/contents/{:path}',
       method: 'get',
       params: { owner, repository, path },
-    })
+    }).then(o => o.map(raw => new FileInformation(raw)))
   }
 
   showFile ({ owner = this.owner, repository = this.repository, path }) {
@@ -74,6 +75,17 @@ export default class Github {
       method: 'get',
       params: { owner, repository, path },
     })
+  }
+
+  updateFile ({ owner = this.owner, repository = this.repository, path, message = 'updated from md_memo', content, sha }) {
+    console.log({ owner, repository, path })
+    return this.request({
+        uri: '/repos/{:owner}/{:repository}/contents/{:path}',
+        method: 'put',
+        params: { owner, repository, path },
+        body: { path, message, content, sha }
+      })
+      .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
   }
 
   download ({ owner = this.owner, repository = this.repository, path }) {

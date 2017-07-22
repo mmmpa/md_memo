@@ -6,15 +6,14 @@ import marked from 'marked';
 @dispatcher
 export default class extends React.Component {
   get marked () {
-    return { __html: marked(this.props.memo.md, { sanitize: true }) };
+    return { __html: marked(this.props.md, { sanitize: true }) };
   }
 
   render () {
     return (
-      <article>
-        <h1>viewer</h1>
-        <section className="viewer" dangerouslySetInnerHTML={this.marked} />
-      </article>
+      <section id="memo-viewer" className="markdown-body">
+        <section dangerouslySetInnerHTML={this.marked} />
+      </section>
     )
   }
 }

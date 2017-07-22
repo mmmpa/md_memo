@@ -8,19 +8,19 @@ import Fa from '../fa'
 @dispatcher
 export default class extends React.Component {
   get files () {
-    return this.props.files.map(({name, download, sha}) =>
-      <li key={sha}>
-        <Link to={ `/memo/f-${sha}` }>{ name }</Link>
+    return this.props.files.map(({name, download, safePath}) =>
+      <li key={safePath}>
+        <Link to={ `/memo/f-${safePath}` }>{ name }</Link>
       </li>
     )
   }
   render () {
     return (
-      <article>
+      <section id="memo-index">
         <ul>
           { this.files }
         </ul>
-      </article>
+      </section>
     )
   }
 }

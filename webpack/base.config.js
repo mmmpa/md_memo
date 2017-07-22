@@ -7,8 +7,8 @@ module.exports = {
     preload: ['./src/preload.js']
   },
   output: {
-    publicPath: 'javascripts',
-    filename: '[name].js'
+    publicPath: '/',
+    filename: 'javascripts/[name].js'
   },
   module: {
     rules: [
@@ -24,7 +24,9 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      'Promise': 'es6-promise'
+      'Promise': 'es6-promise',
+      'jQuery': 'jquery',
+      '$': "jquery"
     }),
     new webpack.DefinePlugin({
       'ENV': JSON.stringify(process.env.ENV || 'development'),
@@ -39,7 +41,8 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: {
-      index: '/'
+      index: '/',
+      disableDotRule: true
     },
     noInfo: true
   },

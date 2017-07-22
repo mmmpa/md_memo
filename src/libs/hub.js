@@ -18,7 +18,7 @@ export default class Hub {
     const cbs = this.store[name]
 
     return cbs && cbs.length
-      ? Promise.all(cbs.map(cb => cb(...args)))
+      ? Promise.all(cbs.map(cb => cb(...args))).catch(e => (console.log(e), Promise.reject(e)))
       : Promise.reject('No callback set.')
   }
 }

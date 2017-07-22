@@ -25,13 +25,17 @@ export default class extends React.Component {
     this.take(this.props)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillUpdate (nextProps) {
     this.take(nextProps)
   }
 
   take (props) {
-    this.setState({ md: props.memo.md });
-    this.cm && this.cm.setValue(props.memo.md)
+    this.setState({ md: props.md });
+    this.cm && this.cm.setValue(props.md)
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return this.state.md !== nextProps.md
   }
 
   componentDidMount () {
@@ -43,32 +47,34 @@ export default class extends React.Component {
       });
 
       this.cm.on('change', e => {
-        this.changeComment(e.doc.getValue())
+        this.changeMD(e.doc.getValue())
       });
 
       this.cm.setValue(this.state.md);
+      this.cm.setSize('100%', '100%')
+      this.dispatch('cm:register', this.cm)
     } catch (e) {
       console.log(e)
     }
   }
 
-  changeComment (value) {
+  changeMD (value) {
     if (this.state.md === value) {
       return
     }
-    this.setState({ md: value });
+    this.setState({ md: value })
+    this.dispatch('memo:md:update', value)
   }
 
   render () {
     return (
-      <article>
-        <h1>editor</h1>
+      <section id="memo-editor">
         <textarea
           name="comment"
           ref={e => (this.editor = e)}
           value={this.state.md}
         />
-      </article>
+      </section>
     )
   }
 }

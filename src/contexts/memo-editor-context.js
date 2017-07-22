@@ -1,7 +1,9 @@
 import React from 'react'
+import { bind } from 'decko'
 
 import { receiver, dispatcher, cloner } from '../libs/decorators/feeder'
 import Memo from '../models/memo'
+import { base64 } from '../libs/encode'
 
 @receiver
 @dispatcher
@@ -10,6 +12,7 @@ export default class extends React.Component {
   state = {
     current: null,
     memo: new Memo(),
+    md: '',
   }
 
   componentWillMount () {
@@ -22,18 +25,24 @@ export default class extends React.Component {
 
   async componentInitialization (props) {
     const { file_name: nextFileName } = props.match.params
+    const nextFile = props.filesMap[nextFileName]
 
-    if (!props.filesMap || nextFileName === this.state.current) {
+    if (!props.filesMap || nextFile === this.state.current) {
       return
     }
 
-    this.setState({ current: nextFileName })
+    this.setState({ current: nextFile })
 
     try {
-      await this.deliverMemo(props.filesMap[nextFileName])
+      await this.deliverMemo(nextFile)
     } catch (e) {
       console.log(e)
     }
+  }
+
+  listen (on) {
+    on('memo:save', this.save)
+    on('memo:md:update', this.updateMd)
   }
 
   async deliverMemo ({ path } = {}) {
@@ -41,13 +50,25 @@ export default class extends React.Component {
       ? new Memo({ md: await this.props.github.download({ path }) })
       : new Memo()
 
-    this.setState({ memo })
+    this.setState({ md: memo.md })
+  }
+
+  @bind
+  updateMd (md) {
+    this.setState({ md })
+  }
+
+  @bind
+  async save () {
+    const { path, sha } = this.state.current
+
+    const { content } = await this.props.github.updateFile({ path, sha, content: base64(this.state.md) })
+    this.dispatch('memo:index:update', content)
   }
 
   render () {
     return (
-      <div className="memo context">
-        <h1>editor context</h1>
+      <div>
         { this.cloneChildren}
       </div>
     )
