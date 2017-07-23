@@ -1,9 +1,7 @@
 import React from 'react'
-import { dispatcher } from '../libs/decorators/feeder'
 import { bind } from 'decko'
 import { Link } from 'react-router-dom'
-
-import Fa from './fa'
+import { dispatcher } from '../libs/decorators/feeder'
 
 @dispatcher
 export default class extends React.Component {

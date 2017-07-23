@@ -40,13 +40,14 @@ export default class Github {
       params: query,
       data: body,
     })
-      .catch(e => {
+      .catch((e) => {
         const { response: { status, statusText, data } } = e
         return Promise.reject({
           ...data,
           status,
+          statusText,
           data,
-          id: Date.now()
+          id: Date.now(),
         })
       })
       .then(({ data }) => data.error
@@ -86,31 +87,34 @@ export default class Github {
   }
 
   createFile ({ owner = this.owner, repository = this.repository, path, message = 'created from md_memo', content }) {
-    return this.request({
+    return this
+      .request({
         uri: '/repos/{:owner}/{:repository}/contents/{:path}',
         method: 'PUT',
         params: { owner, repository, path },
-        body: { path, message, content }
+        body: { path, message, content },
       })
-      .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
+      .then(({ commit, content: resultContent }) => ({ commit, content: new FileInformation(resultContent) }))
   }
 
   updateFile ({ owner = this.owner, repository = this.repository, path, message = 'updated from md_memo', content, sha }) {
-    return this.request({
+    return this
+      .request({
         uri: '/repos/{:owner}/{:repository}/contents/{:path}',
         method: 'put',
         params: { owner, repository, path },
-        body: { path, message, content, sha }
+        body: { path, message, content, sha },
       })
-      .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
+      .then(({ commit, content: resultContent }) => ({ commit, content: new FileInformation(resultContent) }))
   }
 
   deleteFile ({ owner = this.owner, repository = this.repository, path, message = 'deleted from md_memo', sha }) {
-    return this.request({
+    return this
+      .request({
         uri: '/repos/{:owner}/{:repository}/contents/{:path}',
         method: 'delete',
         params: { owner, repository, path },
-        body: { path, message, sha }
+        body: { path, message, sha },
       })
       .then(({ commit, content }) => ({ commit, content: new FileInformation(content) }))
   }

@@ -3,13 +3,7 @@ import { bind } from 'decko'
 
 import { receiver, dispatcher, cloner } from '../libs/decorators/feeder'
 import Memo from '../models/memo'
-import { base64 } from '../libs/encode'
-
-function nextTick () {
-  return new Promise.resolve(resolve => {
-    setTimeout(() => resolve(), 0)
-  })
-}
+import base64 from '../libs/encode'
 
 @receiver
 @dispatcher
@@ -39,6 +33,9 @@ export default class extends React.Component {
 
     if (!nextFileName) {
       this.isNewFile = true
+      if (this.state.md !== '' || this.state.title !== '') {
+        this.setState({ md: '', title: '' })
+      }
     }
 
     if (!props.filesMap || nextFileName === this.currentFileName) {

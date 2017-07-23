@@ -2,11 +2,17 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 export default function (props) {
-  const { component: Component, match, location, history, path, children, ...rest } = props
+  const { component: Component, path, children, ...rest } = props
+
+  delete rest.match
+  delete rest.location
+  delete rest.history
 
   return (
-    <Route {...rest} path={path} render={p => {
-      return <Component {...rest} >{children}</Component>
-    }} />
+    <Route
+      {...rest}
+      path={path}
+      render={() => <Component {...rest} >{children}</Component>}
+    />
   )
 }

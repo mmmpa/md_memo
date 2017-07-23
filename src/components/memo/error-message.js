@@ -1,21 +1,12 @@
 import React from 'react'
-import { bind } from 'decko'
 
 import { dispatcher } from '../../libs/decorators/feeder'
 import Fa from '../fa'
 
 @dispatcher
 export default class extends React.Component {
-  state = {
-    id: null,
-  }
-
   shouldComponentUpdate (nextProps) {
-    return this.state.id !== (nextProps.error ? nextProps.error.id : null)
-  }
-
-  componentWillUpdate (nextProps) {
-    this.setState({ id: nextProps.error.id })
+    return this.id !== (nextProps.error ? nextProps.error.id : null)
   }
 
   get message () {
@@ -35,6 +26,8 @@ export default class extends React.Component {
 
   render () {
     const { error } = this.props
+
+    this.id = error ? error.id : null
 
     if (!error) {
       return null

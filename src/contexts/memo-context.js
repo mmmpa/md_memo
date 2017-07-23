@@ -38,7 +38,7 @@ export default class extends React.Component {
 
   startResize () {
     $(window).unbind('resize')
-    $(window).resize((e) => setTimeout(this.resize, 0))
+    $(window).resize(() => setTimeout(this.resize, 0))
     setTimeout(this.resize, 0)
   }
 
@@ -61,13 +61,13 @@ export default class extends React.Component {
     const $controller = $('#memo-controller')
 
     const indexWidth = $index.width()
-    const { top: bodyTop } = $body.position();
-    const width = ($(window).width() - $index.width()) / 2;
+    const { top: bodyTop } = $body.position()
+    const width = ($(window).width() - $index.width()) / 2
 
     const top = bodyTop + $title.height()
 
-    const bottom = $controller.position().top;
-    const height = bottom - top;
+    const bottom = $controller.position().top
+    const height = bottom - top
 
     $body.css({ height })
     $index.css({ top, height })
@@ -78,17 +78,23 @@ export default class extends React.Component {
 
     if (cm) {
       const $cmGutters = $('.CodeMirror-gutters')
-      const defaultStyle = $cmGutters.attr('style');
-      $cmGutters.css({ 'cssText': defaultStyle + `min-height: ${height}px !important;` });
-      cm.setSize(width, height);
+      const defaultStyle = $cmGutters.attr('style')
+      $cmGutters.css({ cssText: `${defaultStyle} min-height: ${height}px !important` })
+      cm.setSize(width, height)
     }
   }
 
   @bind
   index (path = '') {
     return this.props.github.indexFiles({ path })
-      .then(files => {
-        this.setState({ files, filesMap: files.reduce((a, o) => (a[o.safePath] = o, a), {}) })
+      .then((files) => {
+        this.setState({
+          files,
+          filesMap: files.reduce((a, o) => {
+            a[o.safePath] = o
+            return a
+          }, {}),
+        })
       })
   }
 

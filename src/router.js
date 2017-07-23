@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { hashHistory } from 'react-router'
 
 import PropsRoute from './components/props-route'

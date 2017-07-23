@@ -1,5 +1,6 @@
 {
   "globals": {
+    "$": true,
     "ENV": true,
     "CONFIGURATION": true,
     "APPLICATION_META_INFORMATION": true
@@ -30,6 +31,7 @@
     "default-case": 2,
     "no-div-regex": 2,
     "no-else-return": 2,
+    "no-param-reassign": 0,
     "no-eq-null": 2,
     "no-floating-decimal": 2,
     "no-multi-spaces": [
@@ -62,7 +64,7 @@
     "no-process-env": 1,
     "no-proto": 1,
     "no-throw-literal": 1,
-    "no-unused-expressions": 1,
+    "no-unused-expressions": 0,
     "radix": 1,
     "no-alert": 0,
     "no-extra-bind": 0,

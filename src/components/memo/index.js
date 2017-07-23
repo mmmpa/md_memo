@@ -1,17 +1,16 @@
 import React from 'react'
-import { dispatcher } from '../../libs/decorators/feeder'
-import { bind } from 'decko'
 import { Link } from 'react-router-dom'
 
+import { dispatcher } from '../../libs/decorators/feeder'
 import Fa from '../fa'
 
 @dispatcher
 export default class extends React.Component {
   get files () {
-    return this.props.files.map(({ name, download, safePath }) =>
-      <li key={safePath}>
-        <Link to={ `/memo/${safePath}` }>{ name }</Link>
-      </li>
+    return this.props.files.map(({ name, safePath }) =>
+      (<li key={safePath}>
+        <Link to={`/memo/${safePath}`}>{name}</Link>
+      </li>),
     )
   }
 

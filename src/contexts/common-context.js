@@ -20,12 +20,12 @@ export default class extends React.Component {
   }
 
   componentInitialization (props) {
-    if(!props.location.pathname.startsWith(props.contextPath)){
+    if (!props.location.pathname.startsWith(props.contextPath)) {
       this.setState({ currentPath: null })
       return
     }
 
-    if(this.state.currentPath === props.contextPath){
+    if (this.state.currentPath === props.contextPath) {
       return
     }
 

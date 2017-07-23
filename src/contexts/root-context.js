@@ -29,14 +29,6 @@ export default class extends React.Component {
     working: [],
   }
 
-  get github () {
-    return this.state.github
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.initializeForRoute(nextProps)
-  }
-
   async componentWillMount () {
     const { code } = qs.parse(this.props.location.search)
 
@@ -54,7 +46,7 @@ export default class extends React.Component {
       return
     }
 
-    const { storeRepository } = this.state;
+    const { storeRepository } = this.state
 
     if (!storeRepository) {
       this.props.history.push('/configuration')
@@ -65,12 +57,20 @@ export default class extends React.Component {
     this.initializeForRoute(this.props)
   }
 
+  componentWillReceiveProps (nextProps) {
+    this.initializeForRoute(nextProps)
+  }
+
+  get github () {
+    return this.state.github
+  }
+
   requireNewToken () {
     this.disposeToken()
     this.props.history.push('/configuration')
   }
 
-  initializeForRoute (props) {
+  initializeForRoute () {
     // do nothing
   }
 
@@ -94,7 +94,7 @@ export default class extends React.Component {
       storeRepository = null
     }
 
-    return { github: new Github({ oauth, token: github.token, owner: user.login, repository: repository }), user, storeRepository, repository, isValidToken: true }
+    return { github: new Github({ oauth, token: github.token, owner: user.login, repository }), user, storeRepository, repository, isValidToken: true }
   }
 
   listen (on) {
@@ -141,8 +141,6 @@ export default class extends React.Component {
     if (!this.state.initialized) {
       return null
     }
-
-    //console.log(this.props, this.state)
 
     return (
       <div className={this.state.containerClassName}>

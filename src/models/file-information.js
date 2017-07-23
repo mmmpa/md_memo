@@ -5,7 +5,7 @@ export default class FileInformation {
     this.safePath = this.path
   }
 
-  update(params) {
+  update (params) {
     Object.assign(this, params)
   }
 }
