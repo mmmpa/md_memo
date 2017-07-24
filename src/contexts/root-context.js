@@ -33,7 +33,7 @@ export default class extends React.Component {
     const { code } = qs.parse(this.props.location.search)
 
     try {
-      !this.state.token && code && (await this.takeToken(code))
+      code && (await this.takeToken(code))
     } catch (e) {
       this.requireNewToken()
       return
@@ -49,7 +49,7 @@ export default class extends React.Component {
     const { storeRepository } = this.state
 
     if (!storeRepository) {
-      this.props.history.push('/configuration')
+      this.props.history.push('/common/configuration')
     }
 
     this.setState({ initialized: true })
@@ -67,7 +67,7 @@ export default class extends React.Component {
 
   requireNewToken () {
     this.disposeToken()
-    this.props.history.push('/configuration')
+    this.props.history.push('/common/configuration')
   }
 
   initializeForRoute () {

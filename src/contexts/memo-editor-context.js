@@ -36,6 +36,8 @@ export default class extends React.Component {
       if (this.state.md !== '' || this.state.title !== '') {
         this.setState({ md: '', title: '' })
       }
+    } else {
+      this.isNewFile = false
     }
 
     if (!props.filesMap || nextFileName === this.currentFileName) {
