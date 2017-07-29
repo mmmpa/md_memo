@@ -30,12 +30,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'ENV': JSON.stringify(process.env.ENV || 'development'),
-      'APPLICATION_META_INFORMATION': JSON.stringify({
-        commitId: require('./commit-id'),
-        buildDate: new Date().toString(),
-        clientID: process.env.MD_MEMO_STORE_CLIENT_ID,
-        githubOauthEndpoint: process.env.MD_MEMO_STORE_GITHUB_OAUTH,
-      }),
     }),
     new PreBuild(function () {}),
   ],

@@ -7,7 +7,10 @@ import TinyStorage from '../libs/tiny-storage'
 import Github from '../services/github'
 import configuration from '../configuration'
 
-const { githubOauthEndpoint: oauth, clientID } = configuration
+const {
+  githubOauthEndpoint: oauth,
+  clientID,
+} = configuration
 
 @receiver
 @cloner

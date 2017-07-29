@@ -10,6 +10,14 @@ const production = Object.assign({}, require('./base.config.js'), {
 });
 
 production.plugins = production.plugins.concat([
+  new webpack.DefinePlugin({
+    'APPLICATION_META_INFORMATION': JSON.stringify({
+      commitId: require('./commit-id'),
+      buildDate: new Date().toString(),
+      clientID: process.env.MD_MEMO_STORE_CLIENT_ID,
+      githubOauthEndpoint: process.env.MD_MEMO_STORE_GITHUB_OAUTH,
+    }),
+  }),
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false
