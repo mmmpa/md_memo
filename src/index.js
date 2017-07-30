@@ -11,3 +11,4 @@ export default class App {
 
 App.start(document.querySelector('#app'))
 
+window.progressIndicator.done()

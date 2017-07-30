@@ -27,7 +27,11 @@ export default class Github {
     this.repository = repository
   }
 
-  request ({ uri, method, params, body, query, headers: additionalHeaders = {} }) {
+  request (...args) {
+    return window.progressIndicator.wrap((...a) => this.requestSupport(...a))(...args)
+  }
+
+  requestSupport ({ uri, method, params, body, query, headers: additionalHeaders = {} }) {
     const headers = this.token
       ? { Authorization: `token ${this.token}`, ...additionalHeaders }
       : { ...additionalHeaders }

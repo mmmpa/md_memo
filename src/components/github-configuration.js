@@ -214,7 +214,7 @@ export default class extends React.Component {
           <div className="row">
             <div className="col-md-6 col-md-offset-3">
               <div className="description no-border-box">
-                <h1>Markdown memo on Github application</h1>
+                <h1>Markdown memo on Github</h1>
                 <p>このアプリケーションは特定の Gihub repository を保存先として Markdown によるメモを管理・作成・編集することを目的としています。</p>
                 <p>アプリケーションを使用するにあたって、以下の設定が必要になります。</p>
                 <ul>
