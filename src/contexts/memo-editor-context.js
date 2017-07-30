@@ -69,7 +69,7 @@ export default class extends React.Component {
   }
 
   async deliverMemo ({ path } = {}) {
-    const { path: currentPath } = this.current
+    const { path: currentPath } = this.current || {}
     if (path !== currentPath) {
       return
     }
