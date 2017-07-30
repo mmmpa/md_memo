@@ -6,6 +6,7 @@ import { receiver, cloner } from '../libs/decorators/feeder'
 import TinyStorage from '../libs/tiny-storage'
 import Github from '../services/github'
 import configuration from '../configuration'
+import VerificationState from '../models/verification-state'
 
 const {
   githubOauthEndpoint: oauth,
@@ -19,10 +20,10 @@ export default class extends React.Component {
     token: TinyStorage.getItem('token') || '',
     isValidToken: false,
     repository: TinyStorage.getItem('repository') || '',
+    repositoryVerification: VerificationState.Ready,
     isValidRepository: false,
     repositories: {},
     user: {},
-    storeRepository: null,
     github: new Github({
       oauth,
       token: TinyStorage.getItem('token'),
@@ -33,12 +34,12 @@ export default class extends React.Component {
   }
 
   async componentWillMount () {
-    const { code } = qs.parse(this.props.location.search)
-
     try {
+      const { code } = qs.parse(this.props.location.search)
       code && (await this.takeToken(code))
     } catch (e) {
       this.requireNewToken()
+      this.setState({ initialized: true })
       return
     }
 
@@ -46,22 +47,28 @@ export default class extends React.Component {
       this.state.token && this.setState(await this.refresh())
     } catch (e) {
       this.requireNewToken()
+      this.setState({ initialized: true })
       return
     }
 
-    const { storeRepository } = this.state
+    const { repository } = this.state
 
-    if (!storeRepository) {
+    if (!repository) {
       this.props.history.push('/common/configuration')
+      this.setState({ initialized: true })
+      return
     }
 
+    try {
+      await this.checkRepository(repository, 0)
+    } catch (e) {
+      this.props.history.push('/common/configuration')
+      this.setState({ initialized: true })
+      return
+    }
+
+    this.props.history.push('/memo')
     this.setState({ initialized: true })
-
-    this.initializeForRoute(this.props)
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.initializeForRoute(nextProps)
   }
 
   get github () {
@@ -71,10 +78,6 @@ export default class extends React.Component {
   requireNewToken () {
     this.disposeToken()
     this.props.history.push('/common/configuration')
-  }
-
-  initializeForRoute () {
-    // do nothing
   }
 
   async takeToken (code) {
@@ -104,6 +107,7 @@ export default class extends React.Component {
     on('github:token:new', this.newToken)
     on('github:token:destroy', this.destroyToken)
     on('github:configuration:save', this.saveConfiguration)
+    on('github:repository:check', this.checkRepository)
 
     on('document:layout:change', this.changeLayout)
 
@@ -112,9 +116,9 @@ export default class extends React.Component {
   }
 
   disposeToken () {
-    this.setState({ token: null })
+    const github = new Github({ oauth, token: '' })
+    this.setState({ github, token: '' })
     TinyStorage.removeItem('token')
-    this.github = new Github({ oauth, token: null })
   }
 
   @bind
@@ -138,6 +142,34 @@ export default class extends React.Component {
     this.setState(await this.refresh({ github, repository }))
     TinyStorage.setItem('token', token)
     TinyStorage.setItem('repository', repository)
+  }
+
+  @bind
+  checkRepository (repository, wait = 1000) {
+    if (!this.state.token) {
+      return Promise.reject()
+    }
+
+    if (this.uid) {
+      clearTimeout(this.uid)
+      this.uid = null
+    }
+
+    this.setState({ repositoryVerification: VerificationState.Checking })
+
+    return new Promise((resolve, reject) => {
+      this.uid = setTimeout(async () => {
+        this.setState({ repositoryVerification: VerificationState.Checking })
+        try {
+          await this.state.github.showRepository({ repository })
+          this.setState({ repositoryVerification: VerificationState.Valid })
+          resolve()
+        } catch (e) {
+          this.setState({ repositoryVerification: VerificationState.Invalid })
+          reject()
+        }
+      }, wait)
+    })
   }
 
   render () {

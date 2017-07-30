@@ -52,7 +52,6 @@ export default class extends React.Component {
 
   @bind
   resize () {
-    console.log('resize')
     const $body = $('#memo')
     const $title = $('#memo-title')
     const $index = $('#memo-index')

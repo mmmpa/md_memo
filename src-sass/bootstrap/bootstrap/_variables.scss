@@ -21,6 +21,7 @@ $brand-info:            #9C27B0 !default;
 $brand-warning:         #e67e22 !default;
 $brand-danger:          #e74c3c !default;
 
+$font-color-default: #333;
 
 //== Scaffolding
 //
@@ -29,7 +30,7 @@ $brand-danger:          #e74c3c !default;
 //** Background color for `<body>`.
 $body-bg:               #fff !default;
 //** Global text color on `<body>`.
-$text-color:            $gray !default;
+$text-color:            $font-color-default !default;
 
 //** Global textual link color.
 $link-color:            $brand-primary !default;
@@ -187,7 +188,7 @@ $input-bg:                       transparent !default;
 $input-bg-disabled:              transparent !default;
 
 //** Text color for `<input>`s
-$input-color:                    $gray !default;
+$input-color:                    $font-color-default !default;
 //** `<input>` border color
 $input-border:                   transparent !default;
 

@@ -4,6 +4,9 @@
 $tag-base-color: #f3f3f3
 $title-base-color: #fafafa
 
+body
+  font-family: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif
+
 #memo,
 #memo-index,
 #memo-editor,
@@ -63,11 +66,6 @@ $title-base-color: #fafafa
     position: absolute
     top: 5px
     right: 5px
-    width: 35px
-    padding-left: 0
-    padding-right: 0
-    .fa
-      margin-right: 0
   .error-message
     @extend .text-danger
     display: inline
@@ -94,3 +92,30 @@ a
   &.no-margin
     .fa
       margin-right: 0
+
+h1
+  font-size: 2em
+  margin-bottom: 1em
+h2
+  font-size: 1.7em
+h3
+  font-size: 1.5em
+h4
+  font-size: 1.2em
+h5
+  font-size: 1em
+
+.border-box
+  border: 1px solid $gray-lighter
+  padding: 1em 2em
+  margin-bottom: 2em
+  border-radius: 3px
+
+.no-border-box
+  margin-bottom: 2em
+
+ul
+  padding-left: 20px
+
+.preparation-mark
+  margin-right: 0.5em

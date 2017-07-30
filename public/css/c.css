@@ -1061,7 +1061,7 @@ body {
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   line-height: 1.846;
-  color: #95a5a6;
+  color: #333;
   background-color: #fff; }
 
 input,
@@ -2255,7 +2255,7 @@ output {
   padding-top: 7px;
   font-size: 13px;
   line-height: 1.846;
-  color: #95a5a6; }
+  color: #333; }
 
 .form-control {
   display: block;
@@ -2264,7 +2264,7 @@ output {
   padding: 6px 16px;
   font-size: 13px;
   line-height: 1.846;
-  color: #95a5a6;
+  color: #333;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -2712,7 +2712,7 @@ select[multiple].input-lg,
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
-  color: #dae0e0; }
+  color: #737373; }
 
 @media (min-width: 768px) {
   .form-inline .form-group {
@@ -3251,7 +3251,7 @@ tbody.collapse.in {
     clear: both;
     font-weight: normal;
     line-height: 1.846;
-    color: #95a5a6;
+    color: #333;
     white-space: nowrap; }
 
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
@@ -3564,7 +3564,7 @@ tbody.collapse.in {
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
-  color: #95a5a6;
+  color: #333;
   text-align: center;
   background-color: transparent;
   border: 1px solid transparent;
@@ -4450,7 +4450,7 @@ a.badge:hover, a.badge:focus {
     margin-right: auto; }
   .thumbnail .caption {
     padding: 9px;
-    color: #95a5a6; }
+    color: #333; }
 
 a.thumbnail:hover,
 a.thumbnail:focus,
@@ -6064,7 +6064,6 @@ button.close {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); }
 
 .btn, #memo-controller .save, #memo-controller .delete {
-  text-transform: uppercase;
   border: none;
   -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
@@ -6195,7 +6194,8 @@ input[type=number],
   [contenteditable].form-control[readonly] {
     -webkit-box-shadow: none;
     box-shadow: none;
-    border-bottom: 1px dotted #ddd; }
+    border-bottom: 1px dotted #ddd;
+    color: #95a5a6; }
   textarea.input-sm, .input-group-sm > textarea.form-control,
   .input-group-sm > textarea.input-group-addon,
   .input-group-sm > .input-group-btn > textarea.btn, #memo-controller
@@ -6607,7 +6607,7 @@ input[type="checkbox"],
   box-shadow: inset 0 -2px 0 #2ecc71; }
 
 .has-warning .input-group-addon, .has-error .input-group-addon, .has-success .input-group-addon {
-  color: #95a5a6;
+  color: #333;
   border-color: transparent;
   background-color: transparent; }
 
@@ -6748,6 +6748,9 @@ input[type="checkbox"],
 .carousel-caption h1, .carousel-caption h2, .carousel-caption h3, .carousel-caption h4, .carousel-caption h5, .carousel-caption h6 {
   color: inherit; }
 
+body {
+  font-family: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; }
+
 #memo,
 #memo-index,
 #memo-editor,
@@ -6804,12 +6807,7 @@ input[type="checkbox"],
   #memo-controller .delete {
     position: absolute;
     top: 5px;
-    right: 5px;
-    width: 35px;
-    padding-left: 0;
-    padding-right: 0; }
-    #memo-controller .delete .fa {
-      margin-right: 0; }
+    right: 5px; }
   #memo-controller .error-message {
     display: inline;
     line-height: 35px;
@@ -6834,3 +6832,34 @@ a .fa {
 button.no-margin .fa,
 a.no-margin .fa {
   margin-right: 0; }
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 1em; }
+
+h2 {
+  font-size: 1.7em; }
+
+h3 {
+  font-size: 1.5em; }
+
+h4 {
+  font-size: 1.2em; }
+
+h5 {
+  font-size: 1em; }
+
+.border-box {
+  border: 1px solid #ecf0f1;
+  padding: 1em 2em;
+  margin-bottom: 2em;
+  border-radius: 3px; }
+
+.no-border-box {
+  margin-bottom: 2em; }
+
+ul {
+  padding-left: 20px; }
+
+.preparation-mark {
+  margin-right: 0.5em; }

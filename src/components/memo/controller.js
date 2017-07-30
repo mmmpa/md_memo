@@ -25,10 +25,12 @@ export default class extends React.Component {
         <ErrorMessage error={this.props.error} />
         <button className="save" onClick={this.save} disabled={isLocked}>
           <Fa icon="upload" />
-          save
+          Save
         </button>
         <button className="delete" onClick={this.destroy} disabled={isLocked}>
-          <Fa icon="trash-o" /></button>
+          <Fa icon="trash-o" />
+          Delete Memo (No alert)
+        </button>
       </article>
     )
   }

@@ -1,10 +1,10 @@
 class TinyStorage {
   genKey (key) {
-    return encodeURIComponent(`_cs_${key}`)
+    return encodeURIComponent(key)
   }
 
   setItem (key, value) {
-    document.cookie = `${this.genKey(key)}=${encodeURIComponent(value)} path=/`
+    document.cookie = `${this.genKey(key)}=${encodeURIComponent(value)}; path=/;`
   }
 
   getItem (key) {
@@ -14,11 +14,11 @@ class TinyStorage {
       return null
     }
 
-    return decodeURIComponent(base.pop().split(' ').shift())
+    return decodeURIComponent(base.pop().split('; ').shift())
   }
 
   removeItem (key) {
-    document.cookie = `${this.genKey(key)}=null expires=Thu, 01 Jan 1970 00:00:01 GMT`
+    document.cookie = `${this.genKey(key)}=null; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
   }
 }
 
