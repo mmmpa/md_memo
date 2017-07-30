@@ -70,7 +70,10 @@ export default class extends React.Component {
       return
     }
 
-    this.props.history.push('/memo')
+    if (!this.props.history.location.pathname.startsWith('/memo')) {
+      this.props.history.push('/memo')
+    }
+
     this.setState({ initialized: true })
   }
 

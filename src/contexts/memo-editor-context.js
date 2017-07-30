@@ -69,6 +69,11 @@ export default class extends React.Component {
   }
 
   async deliverMemo ({ path } = {}) {
+    const { path: currentPath } = this.current
+    if (path !== currentPath) {
+      return
+    }
+
     const memo = path
       ? new Memo({ md: await this.props.github.download({ path }) })
       : new Memo()
