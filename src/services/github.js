@@ -124,7 +124,6 @@ export default class Github {
   }
 
   download ({ owner = this.owner, repository = this.repository, path }) {
-    console.log({ owner, repository, path })
     return this.request({
       headers: {
         Accept: 'application/vnd.github.v3.raw',
