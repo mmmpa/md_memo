@@ -29,11 +29,13 @@ export default class extends React.Component {
 
   async componentInitialization (props) {
     const { file_name: nextFileName } = props.match.params
+    const { file_name: oldFileName } = this.props.match.params
     const nextFile = props.filesMap[nextFileName]
 
     if (!nextFileName) {
       this.isNewFile = true
-      if (this.state.md !== '' || this.state.title !== '') {
+
+      if (oldFileName && (this.state.md !== '' || this.state.title !== '')) {
         this.setState({ md: '', title: '' })
       }
     } else {

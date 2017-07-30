@@ -1269,11 +1269,12 @@ a.text-primary:hover,
 a.text-primary:focus {
   color: #217dbb; }
 
-.text-success {
+.text-success, .repository-verification.ok .fa {
   color: #2ecc71; }
 
-a.text-success:hover,
-a.text-success:focus {
+a.text-success:hover, .repository-verification.ok a.fa:hover,
+a.text-success:focus,
+.repository-verification.ok a.fa:focus {
   color: #25a25a; }
 
 .text-info {
@@ -1290,12 +1291,13 @@ a.text-warning:hover,
 a.text-warning:focus {
   color: #bf6516; }
 
-.text-danger, #memo-controller .error-message {
+.text-danger, #memo-controller .error-message, .repository-verification.ng .fa {
   color: #e74c3c; }
 
-a.text-danger:hover, #memo-controller a.error-message:hover,
+a.text-danger:hover, #memo-controller a.error-message:hover, .repository-verification.ng a.fa:hover,
 a.text-danger:focus,
-#memo-controller a.error-message:focus {
+#memo-controller a.error-message:focus,
+.repository-verification.ng a.fa:focus {
   color: #d62c1a; }
 
 .bg-primary {
@@ -6775,13 +6777,15 @@ body {
 #memo-index a {
   display: block;
   border-bottom: 1px solid #ecf0f1;
-  padding: 5px 10px; }
+  padding: 5px 10px;
+  border-right: 0px; }
 
 #memo-index li:last-child a {
   border-bottom: 0; }
 
 #memo-editor {
   border: 1px solid #ecf0f1;
+  border-right: 0px;
   overflow: hidden; }
 
 #memo-viewer {
@@ -6862,4 +6866,11 @@ ul {
   padding-left: 20px; }
 
 .preparation-mark {
+  margin-right: 0.5em; }
+
+.private-repository {
+  line-height: 25px;
+  margin-left: 1em; }
+
+.repository-verification .fa {
   margin-right: 0.5em; }

@@ -32,12 +32,14 @@ body
   display: block
   border-bottom: 1px solid $gray-lighter
   padding: 5px 10px
+  border-right: 0px
 
 #memo-index li:last-child a
   border-bottom: 0
 
 #memo-editor
   border: 1px solid $gray-lighter
+  border-right: 0px
   overflow: hidden
 
 #memo-viewer
@@ -119,3 +121,17 @@ ul
 
 .preparation-mark
   margin-right: 0.5em
+
+.private-repository
+  line-height: 25px
+  margin-left: 1em
+
+.repository-verification
+  .fa
+    margin-right: 0.5em
+  &.ok
+    .fa
+      @extend .text-success
+  &.ng
+    .fa
+      @extend .text-danger

@@ -22,18 +22,21 @@ export default class extends React.Component {
     repository: TinyStorage.getItem('repository') || '',
     repositoryVerification: VerificationState.Ready,
     isValidRepository: false,
+    isPrivateIncluded: false,
     repositories: {},
     user: {},
+    containerClassName: 'container',
+    isLocked: 0,
+    working: [],
     github: new Github({
       oauth,
       token: TinyStorage.getItem('token'),
     }),
-    containerClassName: 'container',
-    isLocked: 0,
-    working: [],
   }
 
   async componentWillMount () {
+    this.checkTryCount = 0
+
     try {
       const { code } = qs.parse(this.props.location.search)
       code && (await this.takeToken(code))
@@ -107,6 +110,7 @@ export default class extends React.Component {
     on('github:token:new', this.newToken)
     on('github:token:destroy', this.destroyToken)
     on('github:configuration:save', this.saveConfiguration)
+    on('github:configuration:private', isPrivateIncluded => this.setState({ isPrivateIncluded }))
     on('github:repository:check', this.checkRepository)
 
     on('document:layout:change', this.changeLayout)
@@ -123,7 +127,8 @@ export default class extends React.Component {
 
   @bind
   newToken () {
-    location.href = `http://github.com/login/oauth/authorize?scope=repo&client_id=${clientID}`
+    const scope = this.state.isPrivateIncluded ? 'repo' : 'public_repo'
+    location.href = `http://github.com/login/oauth/authorize?scope=${scope}&client_id=${clientID}`
   }
 
   @bind
@@ -159,17 +164,23 @@ export default class extends React.Component {
 
     return new Promise((resolve, reject) => {
       this.uid = setTimeout(async () => {
-        this.setState({ repositoryVerification: VerificationState.Checking })
+        this.checkTryCount += 1
+
         try {
           await this.state.github.showRepository({ repository })
-          this.setState({ repositoryVerification: VerificationState.Valid })
+          this.finishCheckRepository(VerificationState.Valid)
           resolve()
         } catch (e) {
-          this.setState({ repositoryVerification: VerificationState.Invalid })
-          reject()
+          this.finishCheckRepository(VerificationState.Invalid)
+          reject(e)
         }
       }, wait)
     })
+  }
+
+  finishCheckRepository (repositoryVerification) {
+    this.checkTryCount -= 1
+    !this.checkTryCount && this.setState({ repositoryVerification })
   }
 
   render () {

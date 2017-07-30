@@ -66,8 +66,8 @@ export default class extends React.Component {
   }
 
   @bind
-  toggle (e) {
-    this.setState({ [e.target.id]: e.target.checked })
+  togglePrivate (e) {
+    this.dispatch('github:configuration:private', e.target.checked)
   }
 
   @bind
@@ -91,11 +91,11 @@ export default class extends React.Component {
       case VerificationState.Ready:
         return null
       case VerificationState.Checking:
-        return <p><Fa icon="spinner" animation="pulse" /></p>
+        return <p className="repository-verification"><Fa icon="spinner" animation="pulse" /></p>
       case VerificationState.Valid:
-        return <p className="text-success">Valid repository name.</p>
+        return <p className="repository-verification ok"><Fa icon="check" />Valid repository name.</p>
       case VerificationState.Invalid:
-        return <p className="text-danger">Invalid repository name.</p>
+        return <p className="repository-verification ng"><Fa icon="exclamation-triangle" />Invalid repository name.</p>
       default:
         return null
     }
@@ -113,7 +113,12 @@ export default class extends React.Component {
   }
 
   get tokenBox () {
-    if (this.props.isValidToken) {
+    const {
+      isValidToken,
+      isPrivateIncluded,
+    } = this.props
+
+    if (isValidToken) {
       return null
     }
 
@@ -125,6 +130,15 @@ export default class extends React.Component {
             <Fa icon="github" />
             Get new access token
           </button>
+          <label htmlFor="isPrivateIncluded" className="private-repository">
+            <input
+              type="checkbox"
+              id="isPrivateIncluded"
+              checked={isPrivateIncluded}
+              onChange={this.togglePrivate}
+            />
+            Use private repository
+          </label>
         </div>
       </div>
     )
